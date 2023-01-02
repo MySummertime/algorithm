@@ -151,3 +151,52 @@ void getMedian6(vector<int>& nums, int left, int right) {
     if (nums[mid] > nums[right])    swap(nums, mid, right);
     if (nums[mid] > nums[left]) swap(nums, mid, left);
 }
+
+
+/*7.双轴快排
+*/
+void dualPivotQuickSort(vector<int>& nums) {
+    if (nums.size() < 2)    return;
+
+}
+
+void dualPivotSort(vector<int>& nums, int left, int right) {
+    if (left >= right)  return;
+    if (nums[left] > nums[right]) {
+        swap(nums, left, right);
+    }
+    // 3 intervals:
+    // [left, lower)中的元素确定属于interval 1
+    // [lower, index)中的元素确定属于interval 2, [index, upper] 中的元素待确定
+    // (upper, right]中的元素确定属于interval 3
+    int idx = left + 1;
+    int lower = left + 1;   // 1 element in interval 1
+    int upper = right - 1;  // 1 element in interval 3
+    while (idx <= upper) {
+        if (nums[idx] < nums[left]) {
+            swap(nums, idx, lower);
+            ++lower;
+        }
+        else if (nums[idx] > nums[right]) {
+            while (nums[upper] > nums[right] && idx < upper) {
+                --upper;
+            }
+            swap(nums, idx, upper);
+            --upper;
+            if (nums[idx] < nums[left]) {
+                swap(nums, idx, lower);
+                ++lower;
+            }
+        }
+        ++idx;
+    }
+    --upper;
+    ++lower;
+    // put the left pivot element to its original index
+    swap(nums, lower, left);
+    // put the right pivot element to its original index
+    swap(nums, upper, right);
+    dualPivotSort(nums, left, lower - 1);
+    dualPivotSort(nums, lower + 1, upper - 1);
+    dualPivotSort(nums, upper + 1, right);
+}
