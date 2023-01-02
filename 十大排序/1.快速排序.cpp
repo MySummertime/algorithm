@@ -1,6 +1,8 @@
 #include <vector>
+#include <stack>
 
 using std::vector;
+using std::stack;
 
 
 void swap(vector<int>& nums, int i, int j) {
@@ -25,7 +27,7 @@ int partition(vector<int>& nums, int pivot, int right) {
 }
 
 
-/*1.单轴（首位轴）快排--递归
+/*1.单轴快排（首位轴）--递归
 */
 void quickSort1(vector<int>& nums) {
     if (nums.size() < 2)    return;
@@ -40,7 +42,7 @@ void sort1(vector<int>& nums, int left, int right) {
 }
 
 
-/*2.单轴（随机轴）快排--递归
+/*2.单轴快排（随机轴）--递归
 */
 void quickSort2(vector<int>& nums) {
     if (nums.size() < 2)    return;
@@ -57,7 +59,7 @@ void sort2(vector<int>& nums, int left, int right) {
 }
 
 
-/*3.单轴（三数取中轴）快排--递归
+/*3.单轴快排（三数取中轴）--递归
 */
 void quickSort3(vector<int>& nums) {
     if (nums.size() < 2)    return;
@@ -65,13 +67,13 @@ void quickSort3(vector<int>& nums) {
 }
 
 void sort3(vector<int>& nums, int left, int right) {
-    getMedian(nums, left, right);
+    getMedian3(nums, left, right);
     int pivot = partition(nums, left, right);
     sort3(nums, left, pivot - 1);
     sort3(nums, pivot + 1, right);
 }
 
-int getMedian(vector<int>& nums, int left, int right) {
+int getMedian3(vector<int>& nums, int left, int right) {
     // execute this function so that nums[mid] < nums[left] < nums[right]
     int mid = left + ((right - left) >> 1);
     if (nums[left] > nums[mid]) swap(nums, left, mid);
@@ -79,3 +81,73 @@ int getMedian(vector<int>& nums, int left, int right) {
     if (nums[mid] > nums[left]) swap(nums, mid, left);
 }
 
+
+/*4.单轴快排（首位轴）--迭代
+*/
+void quickSort4(vector<int>& nums) {
+    if (nums.size() > 2)    return;
+    stack<int> stk;
+    stk.push(nums.size() - 1);
+    stk.push(0);
+    while (!stk.empty()) {
+        int right = stk.top();  stk.pop();
+        int left = stk.top();   stk.pop();
+        if (left >= right)  break;
+        int pivot = partition(nums, left, right);
+        stk.push(pivot - 1);
+        stk.push(left);
+        stk.push(right);
+        stk.push(pivot + 1);
+    }
+}
+
+
+/*5.单轴快排（随机轴）--迭代
+*/
+void quickSort5(vector<int>& nums) {
+    if (nums.size() < 2)    return;
+    stack<int> stk;
+    stk.push(nums.size() - 1);
+    stk.push(0);
+    while (!stk.empty()) {
+        int right = stk.top();  stk.pop();
+        int left = stk.top();   stk.pop();
+        if (left >= right)  break;
+        int idx = rand() % (right - left + 1) + left;
+        swap(nums, left, idx);
+        int pivot = partition(nums, left, right);
+        stk.push(pivot - 1);
+        stk.push(left);
+        stk.push(right);
+        stk.push(pivot + 1);
+    }
+}
+
+
+/*6.单轴快排（三数取中轴）--迭代
+*/
+void quickSort6(vector<int>& nums) {
+    if (nums.size() < 2)    return;
+    stack<int> stk;
+    stk.push(nums.size() - 1);
+    stk.push(0);
+    while (!stk.empty()) {
+        int right = stk.top();  stk.pop();
+        int left = stk.top();   stk.pop();
+        if (left >= right)  break;
+        getMedian6(nums, left, right);
+        int pivot = partition(nums, left, right);
+        stk.push(pivot - 1);
+        stk.push(left);
+        stk.push(right);
+        stk.push(pivot + 1);
+    }
+}
+
+void getMedian6(vector<int>& nums, int left, int right) {
+    // execute the function so that nums[mid] < nums[left] < nums[right]
+    int mid = left + ((right - left) >> 1);
+    if (nums[left] > nums[mid]) swap(nums, left, mid);
+    if (nums[mid] > nums[right])    swap(nums, mid, right);
+    if (nums[mid] > nums[left]) swap(nums, mid, left);
+}
