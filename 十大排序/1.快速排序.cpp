@@ -157,7 +157,7 @@ void getMedian6(vector<int>& nums, int left, int right) {
 */
 void dualPivotQuickSort(vector<int>& nums) {
     if (nums.size() < 2)    return;
-
+    dualPivotSort(nums, 0, nums.size() - 1);
 }
 
 void dualPivotSort(vector<int>& nums, int left, int right) {
