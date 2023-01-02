@@ -69,8 +69,10 @@ void sort2(vector<int>& nums, int left, int right) {
 void blockSwap(vector<int>& nums, int left, int mid, int right) {
     int l = left, r = mid + 1;
     while (l < r && r <= right) {
+        // find the leftmost element to the left side of r which is > nums[r]
         while (l < r && nums[l] <= nums[r]) ++l;
         int idx = r;
+        // find the leftmost element to the right side of r which is >= nums[l]
         while (r <= right && nums[r] < nums[l]) ++r;
         exchange(nums, l, idx - 1, r - 1);
     }
