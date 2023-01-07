@@ -1,4 +1,5 @@
 /*746. Min Cost Climbing Stairs
+https://leetcode.cn/problems/min-cost-climbing-stairs/
 */
 #include <vector>
 
