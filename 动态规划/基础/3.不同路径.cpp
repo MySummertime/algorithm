@@ -12,6 +12,7 @@ using std::vector;
 class Solution1 {
 public:
     // dfs
+    // TLE
     int uniquePaths(int m, int n) {
         return dfs(1, 1, m, n);
     }
@@ -26,6 +27,29 @@ private:
 
 
 class Solution2 {
+public:
+    // memorized dfs
+    int uniquePaths(int m, int n) {
+        vector<vector<int>> vis(m, vector<int>(n, 0));
+        return dfs(m, n, vis, 0, 0);
+    }
+
+private:
+    int dfs(const int& m, const int& n, vector<vector<int>>& vis, int i, int j) {
+        if (i >= m || j >= n)   return 0;
+        if (vis[i][j] > 0)  return vis[i][j];
+        if (i == m - 1 && j == n - 1) {
+            vis[i][j] = 1;
+            return 1;
+        }
+        int ans = dfs(m, n, vis, i + 1, j) + dfs(m, n, vis, i, j + 1);
+        vis[i][j] = ans;
+        return ans;
+    }
+};
+
+
+class Solution3 {
 public:
     // dynamic programming
     // Time: O(m*n)
