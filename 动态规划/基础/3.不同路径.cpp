@@ -4,6 +4,7 @@ https://leetcode.cn/problems/unique-paths/
 
 #include <vector>
 #include <cstdio>
+#include <ctime>
 
 using std::vector;
 
